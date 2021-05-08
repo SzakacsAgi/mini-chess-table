@@ -1,13 +1,17 @@
 package com.university.chess.app;
 
 import com.university.chess.config.BoardConfig;
+import com.university.chess.config.FileConfig;
 import com.university.chess.factory.ColorProviderFactory;
+import com.university.chess.factory.ImageViewFactory;
 import com.university.chess.provider.ColorProvider;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Control;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -22,7 +26,10 @@ public class MiniChessTableApplication extends Application {
 
     private static final String STYLE_PATTERN = "-fx-background-color: {0};";
 
+
     private final ColorProvider colorProvider = new ColorProviderFactory().get();
+    private final ImageViewFactory imageViewFactory = new ImageViewFactory();
+
 
     @Override
     public void start(final Stage primaryStage) {
@@ -30,6 +37,16 @@ public class MiniChessTableApplication extends Application {
         for (var row = 0; row < BoardConfig.SIZE; row++) {
             for (var column = 0; column < BoardConfig.SIZE; column ++) {
                 final var square = new StackPane();
+                if (row == 0)  {
+                    var imageView = imageViewFactory.create(FileConfig.CHESS_KNIGHT_WHITE_PNG);
+                    square.getChildren().add(imageView);
+                }
+
+                if (row == 2)  {
+                    var imageView = imageViewFactory.create(FileConfig.CHESS_KNIGHT_BLACK_PNG);
+                    square.getChildren().add(imageView);
+                }
+
                 final var color = colorProvider.getByIndex(row + column);
                 square.setStyle(MessageFormat.format(STYLE_PATTERN, color));
                 root.add(square, column, row);
