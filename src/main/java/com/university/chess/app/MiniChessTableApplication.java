@@ -4,14 +4,14 @@ import com.university.chess.config.BoardConfig;
 import com.university.chess.config.FileConfig;
 import com.university.chess.factory.ColorProviderFactory;
 import com.university.chess.factory.ImageViewFactory;
+import com.university.chess.model.FieldPosition;
+import com.university.chess.model.FieldValue;
 import com.university.chess.provider.ColorProvider;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Control;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -20,12 +20,13 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 public class MiniChessTableApplication extends Application {
 
     private static final String STYLE_PATTERN = "-fx-background-color: {0};";
-
 
     private final ColorProvider colorProvider = new ColorProviderFactory().get();
     private final ImageViewFactory imageViewFactory = new ImageViewFactory();
@@ -33,18 +34,25 @@ public class MiniChessTableApplication extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
+        final Map<FieldPosition, FieldValue> board = new HashMap<>();
+
         final var root = new GridPane();
         for (var row = 0; row < BoardConfig.SIZE; row++) {
             for (var column = 0; column < BoardConfig.SIZE; column ++) {
                 final var square = new StackPane();
-                if (row == 0)  {
-                    var imageView = imageViewFactory.create(FileConfig.CHESS_KNIGHT_WHITE_PNG);
-                    square.getChildren().add(imageView);
+                if (row == 0) {
+                    board.put(new FieldPosition(row, column), FieldValue.WHITE_KNIGHT);
+                }
+                if (row == 1) {
+                    board.put(new FieldPosition(row, column), FieldValue.EMPTY);
+                }
+                if (row == 2) {
+                    board.put(new FieldPosition(row, column), FieldValue.BLACK_KNIGHT);
                 }
 
-                if (row == 2)  {
-                    var imageView = imageViewFactory.create(FileConfig.CHESS_KNIGHT_BLACK_PNG);
-                    square.getChildren().add(imageView);
+                switch (board.get(new FieldPosition(row, column))) {
+                    case BLACK_KNIGHT -> square.getChildren().add(imageViewFactory.create(FileConfig.CHESS_KNIGHT_BLACK_PNG));
+                    case WHITE_KNIGHT -> square.getChildren().add(imageViewFactory.create(FileConfig.CHESS_KNIGHT_WHITE_PNG));
                 }
 
                 final var color = colorProvider.getByIndex(row + column);
