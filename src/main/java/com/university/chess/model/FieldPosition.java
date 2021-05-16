@@ -3,8 +3,8 @@ package com.university.chess.model;
 import lombok.Data;
 
 @Data
-public class FieldPosition {
+public class Coordination {
 
-    private final int rowIndex;
-    private final int columnIndex;
+    private final int positionX;
+    private final int positionY;
 }
