@@ -1,6 +1,6 @@
 package com.university.chess.model;
 
-public enum FieldFigure {
+public enum FieldValue {
 
     BLACK_KNIGHT,
     WHITE_KNIGHT,

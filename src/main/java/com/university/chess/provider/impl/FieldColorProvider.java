@@ -1,15 +1,15 @@
 package com.university.chess.provider.impl;
 
-import com.university.chess.model.Color;
+import com.university.chess.model.FieldColor;
 import com.university.chess.provider.ColorProvider;
 
 public class FieldColorProvider implements ColorProvider {
 
     @Override
-    public Color getByIndex(final int index) {
+    public FieldColor getByIndex(final int index) {
         return isEven(index)
-                ? Color.WHITE
-                : Color.BLACK;
+                ? FieldColor.WHITE
+                : FieldColor.BLACK;
     }
 
     private boolean isEven(final int number) {

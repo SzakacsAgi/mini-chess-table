@@ -1,8 +1,8 @@
 package com.university.chess.provider;
 
-import com.university.chess.model.Color;
+import com.university.chess.model.FieldColor;
 
 public interface ColorProvider {
 
-    Color getByIndex(int index);
+    FieldColor getByIndex(int index);
 }

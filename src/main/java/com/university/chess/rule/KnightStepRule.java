@@ -4,5 +4,5 @@ import com.university.chess.model.FieldPosition;
 
 public interface KnightStepRule {
 
-    boolean isValid(FieldPosition source, FieldPosition target);
+    boolean isValid(FieldPosition target);
 }

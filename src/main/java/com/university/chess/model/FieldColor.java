@@ -1,6 +1,6 @@
 package com.university.chess.model;
 
-public enum Color {
+public enum FieldColor {
 
     BLACK,
     WHITE
