@@ -29,7 +29,7 @@ public enum KnightStepStrategy {
     private final int positionY;
     private final KnightStepRule knightStepRule;
 
-    public static final KnightStepStrategy from(final FieldPosition fieldPosition) {
+    public static KnightStepStrategy from(final FieldPosition fieldPosition) {
         return Arrays.stream(KnightStepStrategy.values())
                 .filter(knightStepStrategy -> knightStepStrategy.getPositionX() == fieldPosition.getPositionX() && knightStepStrategy.getPositionY() == fieldPosition.getPositionY())
                 .findFirst()
