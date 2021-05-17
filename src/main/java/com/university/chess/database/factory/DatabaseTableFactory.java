@@ -11,6 +11,11 @@ public class DatabaseTableFactory {
     public static final String CREATE_TABLE_QUERY_STEP_HISTORY = "CREATE TABLE STEP_HISTORY "
             + "(id integer identity, fromPositionX integer, fromPositionY integer, toPositionX integer, toPositionY integer, figureValue varchar(20))";
 
+    public static final String DROP_TABLE_QUERY_FIELD_POSITION = "DROP TABLE BOARD_FIELD IF EXISTS";
+
+    public static final String DROP_TABLE_QUERY_STEP_HISTORY = "DROP TABLE STEP_HISTORY IF EXISTS";
+
+
     private final Jdbi jdbi = JdbiProvider.getInstance();
 
     public void createBoardFieldTableQuery() {
@@ -21,7 +26,15 @@ public class DatabaseTableFactory {
         create(CREATE_TABLE_QUERY_STEP_HISTORY);
     }
 
-    private void create(final String tableCreationQuery) {
-        jdbi.useHandle(handle -> handle.execute(tableCreationQuery));
+    public void dropBoardFieldTableQuery() {
+        create(DROP_TABLE_QUERY_FIELD_POSITION);
+    }
+
+    public void dropStepHistoryTableQuery() {
+        create(DROP_TABLE_QUERY_STEP_HISTORY);
+    }
+
+    private void create(final String tableQuery) {
+        jdbi.useHandle(handle -> handle.execute(tableQuery));
     }
 }
