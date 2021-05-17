@@ -47,7 +47,27 @@ public class FieldPositionRepository {
     public List<BoardField>  findAll() {
         var result = new ArrayList<BoardField>();
         jdbi.useHandle(handle -> {
-            result.addAll(handle.createQuery("SELECT positionX, positionY, figureValue FROM BOARD_FIELD")
+            result.addAll(handle.createQuery("SELECT positionX, positionY, figureValue FROM BOARD_FIELD ")
+                    .execute(ResultProducers.returningResults()).map((rs, ctx) -> new BoardField(rs.getInt("positionX"), rs.getInt("positionY"), FieldValue.valueOf(rs.getString("figureValue")))).list());
+        });
+        return result;
+    }
+
+    public List<BoardField>  findFirstNRecords(final int n) {
+        var result = new ArrayList<BoardField>();
+        jdbi.useHandle(handle -> {
+            result.addAll(handle.createQuery("SELECT TOP :n positionX, positionY, figureValue FROM BOARD_FIELD ORDER BY id ASC")
+                    .bind("n", n)
+                    .execute(ResultProducers.returningResults()).map((rs, ctx) -> new BoardField(rs.getInt("positionX"), rs.getInt("positionY"), FieldValue.valueOf(rs.getString("figureValue")))).list());
+        });
+        return result;
+    }
+
+    public List<BoardField>  findLastNRecords(final int n) {
+        var result = new ArrayList<BoardField>();
+        jdbi.useHandle(handle -> {
+            result.addAll(handle.createQuery("SELECT TOP :n positionX, positionY, figureValue FROM BOARD_FIELD ORDER BY id DESC")
+                    .bind("n", n)
                     .execute(ResultProducers.returningResults()).map((rs, ctx) -> new BoardField(rs.getInt("positionX"), rs.getInt("positionY"), FieldValue.valueOf(rs.getString("figureValue")))).list());
         });
         return result;
@@ -77,5 +97,4 @@ public class FieldPositionRepository {
                     .execute();
         });
     }
-
 }

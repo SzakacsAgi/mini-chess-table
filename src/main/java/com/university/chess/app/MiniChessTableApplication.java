@@ -16,6 +16,7 @@ import com.university.chess.model.FieldValue;
 import com.university.chess.model.StepHistory;
 import com.university.chess.provider.ColorProvider;
 import com.university.chess.rule.EmptyPositionChecker;
+import com.university.chess.rule.EndGameChecker;
 import com.university.chess.rule.NextStepChecker;
 import com.university.chess.rule.ValidKnightStepVerifier;
 import javafx.application.Application;
@@ -113,7 +114,10 @@ public class MiniChessTableApplication extends Application {
                         }
 
                         new StepHistoryRepository().insert(sourceFieldPosition, targetFieldPosition, movingKnight);
-
+                        
+                        if (new EndGameChecker(new FieldPositionRepository()).isEndGame()) {
+                            System.exit(0);
+                        }
                     }
 
 
