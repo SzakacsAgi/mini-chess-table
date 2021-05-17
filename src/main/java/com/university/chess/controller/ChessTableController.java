@@ -26,6 +26,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -39,6 +41,8 @@ import static com.university.chess.model.FieldValue.EMPTY;
 @Getter
 public class ChessTableController implements EventHandler {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChessTableController.class);
+
     private static final String STYLE_PATTERN = "-fx-background-color: {0};";
 
     private final ColorProvider colorProvider = new ColorProviderFactory().get();
@@ -48,6 +52,8 @@ public class ChessTableController implements EventHandler {
 
     @Override
     public void handle(final Event event2) {
+        LOGGER.info("Loading chess table view....");
+
         new DatabaseInitializer(new DatabaseTableFactory(), new BoardFieldPopulator(new FieldPositionRepository())).init();
 
         Map<String, StackPane> draggedAndDroppedFields = new HashMap<>();
@@ -86,6 +92,8 @@ public class ChessTableController implements EventHandler {
 
                     final var movingKnight =  new FieldPositionRepository().findByPosition(new FieldPosition(GridPane.getRowIndex(source), GridPane.getColumnIndex(source))).get().getFieldValue();
 
+                    LOGGER.info("Source field={}, target field={}, knight={}", sourceFieldPosition, targetFieldPosition, movingKnight);
+
                     if (new ValidKnightStepVerifier(new EmptyPositionChecker(new FieldPositionRepository()), new NextStepChecker(new StepHistoryRepository())).isValidStep(sourceFieldPosition, targetFieldPosition, movingKnight)) {
                         new FieldPositionRepository().updatePositionValue(new FieldPosition(GridPane.getRowIndex(target), GridPane.getColumnIndex(target)), movingKnight);
                         new FieldPositionRepository().updatePositionValue(new FieldPosition(GridPane.getRowIndex(source), GridPane.getColumnIndex(source)), EMPTY);
@@ -97,7 +105,11 @@ public class ChessTableController implements EventHandler {
 
                         new StepHistoryRepository().insert(sourceFieldPosition, targetFieldPosition, movingKnight);
 
+                        LOGGER.info("Source field={}, target field={}, knight={} with successful step", sourceFieldPosition, targetFieldPosition, movingKnight);
+
+
                         if (new EndGameChecker(new FieldPositionRepository()).isEndGame()) {
+                            LOGGER.info("Game is over...");
                             final StepHistoryController controllerB = new StepHistoryController(primaryStage);
                             final Scene scene = new Scene(controllerB.getView());
                             primaryStage.setScene(scene);
