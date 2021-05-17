@@ -4,7 +4,9 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * Ez felele azert, hogy a kilepes gomb megnyomasaval lealljon a program.
+ */
 public class ExitController implements EventHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExitController.class);

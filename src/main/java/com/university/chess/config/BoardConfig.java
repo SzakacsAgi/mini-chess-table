@@ -1,5 +1,7 @@
 package com.university.chess.config;
-
+/**
+ * Beallitjuk, hogy mekora legyen a palya.
+ */
 public class BoardConfig {
 
     public static final int SIZE = 3;
